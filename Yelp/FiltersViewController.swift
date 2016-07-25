@@ -14,14 +14,26 @@ import UIKit
 
 }
 
-class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
+class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DealsCellDelegate, CategoriesCellDelegate {
 
     @IBOutlet weak var filtersTableView: UITableView!
     
     weak var delegate: FiltersViewControllerDelegate!
     
+    var cellSections = [["deals": "Offering a Deal"], ["distance": "Distance"],
+                        ["sort": "Sory By"],["category": "Category"]]
+    var isExpanded: [Bool]! // store if the section is expanded or not
+    
+    var dealSwitchState = Bool()
+    
+    var distanceOptions = ["Best Match", "0.3 miles", "1 mile", "5 miles", "20 miles"]
+    var currentDistanceOptionIndex = 0
+    
+    var sortOptions = ["Best Match", "Distance", "Rating"]
+    var currentSortOptionIndex = 0
+    
     var categories: [[String:String]]!
-    var switchStates: [Int:Bool]!
+    var switchStates = [Int:Bool]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,23 +42,163 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.filtersTableView.dataSource = self
         self.filtersTableView.delegate = self
+        isExpanded = [Bool](count: cellSections.count, repeatedValue: false)
+        
+        var cellNib = UINib(nibName: "DealsCell", bundle: NSBundle.mainBundle())
+        self.filtersTableView.registerNib(cellNib, forCellReuseIdentifier: "DealsCell")
+        
+        cellNib = UINib(nibName: "DistanceCell", bundle: NSBundle.mainBundle())
+        self.filtersTableView.registerNib(cellNib, forCellReuseIdentifier: "DistanceCell")
+        
+        cellNib = UINib(nibName: "SortCell", bundle: NSBundle.mainBundle())
+        self.filtersTableView.registerNib(cellNib, forCellReuseIdentifier: "SortCell")
+        
+        cellNib = UINib(nibName: "CategoriesCell", bundle: NSBundle.mainBundle())
+        self.filtersTableView.registerNib(cellNib, forCellReuseIdentifier: "CategoriesCell")
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // since categories is static, no error handling required
-        return categories.count
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // since cellSections is static, no error handling required
+        return cellSections.count
     }
     
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (self.cellSections[section]["distance"] != nil) {
+            
+            if (isExpanded[section]) {
+               return distanceOptions.count
+            }
+            return 1
+            
+        } else if (self.cellSections[section]["sort"] != nil) {
+            
+            if (isExpanded[section]) {
+                return sortOptions.count
+            }
+            return 1
+            
+        } else  if (self.cellSections[section]["category"] != nil) {
+            
+            return categories.count
+            
+        }
+        return 1
+    }
+    
+        
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.filtersTableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+        let cell = UITableViewCell()
         
-        cell.filterName.text = categories[indexPath.row]["name"]
-        cell.delegate = self
-        
-        // example of ternary operator in swift
-        cell.onSwitch.on = self.switchStates?[indexPath.row] ?? false
+        if (self.cellSections[indexPath.section]["deals"] != nil) {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("DealsCell", forIndexPath: indexPath) as! DealsCell
+            cell.dealsLabel.text = self.cellSections[indexPath.section]["deals"]
+            cell.delegate = self
+            // example of ternary operator in swift
+            cell.dealsSwitch.on = self.dealSwitchState ?? false
+            return cell
+            
+        } else if (self.cellSections[indexPath.section]["distance"] != nil) {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("DistanceCell", forIndexPath: indexPath) as! DistanceCell
+            
+            // logic to show the checked row in the section
+            var rowIndex = 0
+            if (tableView.numberOfRowsInSection(indexPath.section) == 1) {
+                
+                rowIndex = currentDistanceOptionIndex
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                
+            } else {
+                
+                rowIndex = indexPath.row
+                if (indexPath.row == currentDistanceOptionIndex) {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                } else {
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                }
+                
+            }
+            cell.distanceLabel.text = self.distanceOptions[rowIndex]
+            
+            return cell
+            
+        } else if (self.cellSections[indexPath.section]["sort"] != nil) {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("SortCell", forIndexPath: indexPath) as! SortCell
+            
+            // logic to show the checked row in the section
+            var rowIndex = 0
+            if (tableView.numberOfRowsInSection(indexPath.section) == 1) {
+                
+                rowIndex = currentSortOptionIndex
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                
+            } else {
+                
+                rowIndex = indexPath.row
+                if (indexPath.row == currentSortOptionIndex) {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                } else {
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                }
+                
+            }
+            cell.sortLabel.text = self.sortOptions[rowIndex]
+            
+            return cell
+            
+        } else if (self.cellSections[indexPath.section]["category"] != nil) {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("CategoriesCell", forIndexPath: indexPath) as! CategoriesCell
+            cell.categoriesLabel.text = categories[indexPath.row]["name"]
+            cell.delegate = self
+            // example of ternary operator in swift
+            cell.categoriesSwitch.on = self.switchStates[indexPath.row] ?? false
+            return cell
+            
+        }
+        print ("Something went terribly wrong, we should have returned the cell in the if loop")
         return cell
     }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if (self.cellSections[indexPath.section]["distance"] != nil) {
+            
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            isExpanded[indexPath.section] = !isExpanded[indexPath.section]
+            if (!isExpanded[indexPath.section]) {
+                currentDistanceOptionIndex = indexPath.row
+            }
+            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+        
+        } else if (self.cellSections[indexPath.section]["sort"] != nil) {
+            
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            isExpanded[indexPath.section] = !isExpanded[indexPath.section]
+            if (!isExpanded[indexPath.section]) {
+                currentSortOptionIndex = indexPath.row
+            }
+            tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+        }
+    }
+
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var headerLabel = ""
+        if (self.cellSections[section]["distance"] != nil) {
+            headerLabel = self.cellSections[section]["distance"]!
+        } else if (self.cellSections[section]["sort"] != nil) {
+            headerLabel = self.cellSections[section]["sort"]!
+        } else  if (self.cellSections[section]["category"] != nil) {
+            headerLabel = self.cellSections[section]["category"]!
+        }
+        return headerLabel
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,26 +214,35 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         dismissViewControllerAnimated(true, completion: nil)
         var filters = [String:AnyObject]()
         
+        filters["deals"] = dealSwitchState
+        
+        // miles converted to meter (rounded)
+        let radiusFilter = [0, 483, 1609, 8047, 32187]
+        filters["distance"] = radiusFilter[currentDistanceOptionIndex]
+        
+        // since the search api input values are matched with the array created
+        filters["sort"] = currentSortOptionIndex
+        
         var selectedCategories = [String]()
-        if self.switchStates != nil {
-            for (row, isSelected) in self.switchStates {
-                if isSelected {
-                    selectedCategories.append(categories[row]["code"]!)
-                }
+        for (row, isSelected) in self.switchStates {
+            if isSelected {
+                selectedCategories.append(categories[row]["code"]!)
             }
         }
-        if selectedCategories.count > 0 {
+        if (selectedCategories.count > 0) {
             filters["categories"] = selectedCategories
         }
         
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
-        
+    }    
+    
+    func categoriesCell(categoriesCell: CategoriesCell, didChangeValue value: Bool) {
+        let indexPath = self.filtersTableView.indexPathForCell(categoriesCell)
+        self.switchStates[indexPath!.row] = value
     }
     
-    func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
-        let indexPath = filtersTableView.indexPathForCell(switchCell)!
-        
-        self.switchStates?[indexPath.row] = value
+    func dealsCell(dealsCell: DealsCell, didChangeValue value: Bool) {
+        self.dealSwitchState = value
     }
     
     func yelpCategories() -> [[String:String]] {

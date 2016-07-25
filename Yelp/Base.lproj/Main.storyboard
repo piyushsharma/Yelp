@@ -153,40 +153,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="68" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fyF-2w-5jC">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" rowHeight="68" id="FPJ-M4-biE" customClass="SwitchCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="320" height="68"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FPJ-M4-biE" id="mcI-rJ-F22">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="67.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1JT-3X-j1J">
-                                                    <rect key="frame" x="14" y="23" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="05x-gw-rsy">
-                                                    <rect key="frame" x="257" y="18" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="switchValueChanged:" destination="FPJ-M4-biE" eventType="valueChanged" id="dP5-UF-6nh"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="1JT-3X-j1J" firstAttribute="centerY" secondItem="mcI-rJ-F22" secondAttribute="centerY" id="47P-0W-G7z"/>
-                                                <constraint firstAttribute="trailing" secondItem="05x-gw-rsy" secondAttribute="trailing" constant="14" id="E1V-Sj-51F"/>
-                                                <constraint firstItem="1JT-3X-j1J" firstAttribute="leading" secondItem="mcI-rJ-F22" secondAttribute="leading" constant="14" id="GPU-5q-yae"/>
-                                                <constraint firstItem="05x-gw-rsy" firstAttribute="centerY" secondItem="mcI-rJ-F22" secondAttribute="centerY" id="dnT-me-GJC"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="filterName" destination="1JT-3X-j1J" id="8uQ-7L-JGQ"/>
-                                            <outlet property="onSwitch" destination="05x-gw-rsy" id="efQ-Vf-U2o"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
