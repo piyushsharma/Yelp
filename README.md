@@ -44,7 +44,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-![App Usage](/demp/yelp.gif?raw=true)
+![App Usage](/demo/yelp.gif?raw=true)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
