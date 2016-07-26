@@ -2,7 +2,7 @@
 
 **Yelp** is an app to search restaurants using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **10** hours spent in total
+Time spent: **16** hours spent in total
 
 ## User Stories
 
