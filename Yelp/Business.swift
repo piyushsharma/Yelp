@@ -17,6 +17,9 @@ class Business: NSObject {
     let ratingImageURL: NSURL?
     let reviewCount: NSNumber?
     
+    var latitude = 37.6213
+    var longitude = -122.3790
+
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
         
@@ -41,6 +44,14 @@ class Business: NSObject {
                     address += ", "
                 }
                 address += neighborhoods![0] as! String
+            }
+            
+            let coordinate = location!["coordinate"] as? NSDictionary
+            if coordinate != nil && coordinate!["latitude"] != nil {
+                self.latitude = (coordinate!["latitude"] as? Double)!
+            }
+            if coordinate != nil && coordinate!["longitude"] != nil {
+                self.longitude = (coordinate!["longitude"] as? Double)!
             }
         }
         self.address = address

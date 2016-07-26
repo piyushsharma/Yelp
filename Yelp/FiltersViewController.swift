@@ -208,7 +208,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     @IBAction func onCancelButton(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
-        
     }
 
     @IBAction func onSearchButton(sender: AnyObject) {

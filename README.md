@@ -23,7 +23,7 @@ The following **optional** features are implemented:
 
 - [ ] Search results page
    - [X] Infinite scroll for restaurant results.
-   - [ ] Implement map view of restaurant results.
+   - [X] Implement map view of restaurant results.
 - [ ] Filter page
    - [ ] Implement a custom switch instead of the default UISwitch.
    - [X] Distance filter should expand as in the real Yelp app
@@ -38,12 +38,13 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 1. How easy is it to apply the dry coding principle in swift?
 2. Any good read on app design principles?
+3. If we do not know the location coordinates of user, can we find a center location using the coordinates present in the result set?
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/5Koj3aL.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

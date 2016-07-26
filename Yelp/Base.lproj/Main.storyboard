@@ -127,7 +127,13 @@
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="saa-1I-U3e">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="6je-hV-K34" kind="modal" id="p3r-yq-pyR"/>
+                                <segue destination="6je-hV-K34" kind="modal" identifier="filterSegue" id="p3r-yq-pyR"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="W4z-gc-jT5">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="55D-ik-Xb1" kind="modal" identifier="mapSegue" id="vBo-Ah-cXb"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -184,7 +190,47 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KdO-Db-q7u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2035" y="329"/>
+            <point key="canvasLocation" x="2111" y="-316"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="o6r-ES-UbX">
+            <objects>
+                <viewController id="w3U-NF-DOR" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="boS-o7-8U5"/>
+                        <viewControllerLayoutGuide type="bottom" id="8sl-TY-8CY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DI9-MV-T0U">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="stF-LA-Hme">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="stF-LA-Hme" firstAttribute="top" secondItem="DI9-MV-T0U" secondAttribute="top" id="BQP-Ys-dvm"/>
+                            <constraint firstAttribute="bottom" secondItem="stF-LA-Hme" secondAttribute="bottom" id="L16-qH-uz0"/>
+                            <constraint firstItem="stF-LA-Hme" firstAttribute="leading" secondItem="DI9-MV-T0U" secondAttribute="leading" id="fr9-rW-1ww"/>
+                            <constraint firstAttribute="trailing" secondItem="stF-LA-Hme" secondAttribute="trailing" id="hiJ-wn-tMP"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Map" id="jIe-dN-hC6">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="xNq-C0-iRx">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="onCancelButton:" destination="w3U-NF-DOR" id="wV7-O3-3qy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="stF-LA-Hme" id="BrD-z2-f0Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qqp-Wy-mlr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2111" y="320"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cOO-xC-sCl">
@@ -222,7 +268,27 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WRv-MF-TrF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1640" y="329"/>
+            <point key="canvasLocation" x="1681" y="-316"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="o2J-vY-9Wl">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="55D-ik-Xb1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="3sh-9o-FDd"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="stN-vJ-Etn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.76862745099999996" green="0.070588235289999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="w3U-NF-DOR" kind="relationship" relationship="rootViewController" id="PmZ-OO-u0R"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nd1-Qa-euK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1681" y="320"/>
         </scene>
     </scenes>
 </document>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 
 class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UIScrollViewDelegate {
@@ -70,7 +71,11 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
             offset = self.businesses.count + 1
         }
         
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, radius: radius, offset: offset, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+            
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
             
             // Update flag
             self.isMoreDataLoading = false
@@ -80,7 +85,7 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
             if (append) {
                 self.businesses.appendContentsOf(businesses)
             } else {
-                self.businesses = businesses
+                self.businesses = businesses    
             }
             self.filteredBusinesses = self.businesses
             
@@ -191,22 +196,23 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
         self.filters["sort"] = filters["sort"]
     
         self.filters["categories"] = filters["categories"] as? [String]
-        
-        
+                
         self.loadBusinessData(false)
-        
-//        Business.searchWithTerm("Restaurants", sort: sortBy, categories: categories, deals: dealSwitchState, radius: radiusFilter, completion: { (businesses: [Business]!, error: NSError!) -> Void in
-//            self.businesses = businesses
-//            self.yelpTableView.reloadData()
-//        })
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let navigationController = segue.destinationViewController as! UINavigationController
-        let filtersViewController = navigationController.topViewController as! FiltersViewController
-        filtersViewController.delegate = self
+        if (segue.identifier == "filterSegue") {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let filtersViewController = navigationController.topViewController as! FiltersViewController
+            filtersViewController.delegate = self
+        }
         
+        if (segue.identifier == "mapSegue") {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let mapViewController = navigationController.topViewController as! MapViewController
+            mapViewController.businesses = self.businesses
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
