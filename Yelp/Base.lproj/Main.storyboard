@@ -125,6 +125,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Yelp" id="wDS-5J-fte">
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="saa-1I-U3e">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="6je-hV-K34" kind="modal" id="p3r-yq-pyR"/>
                             </connections>
@@ -165,11 +166,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Filter" id="pqe-Fb-K2t">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="lgg-JC-qSM">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onCancelButton:" destination="7XK-IP-aKi" id="0OG-vX-XI1"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Search" id="i5u-WA-rhk">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onSearchButton:" destination="7XK-IP-aKi" id="A97-8V-Xry"/>
                             </connections>
@@ -191,6 +194,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LKM-bX-DSn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.76862745098039209" green="0.070588235294117646" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -209,6 +213,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0hr-bL-QH0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.76862745099999996" green="0.070588235289999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

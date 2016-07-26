@@ -27,6 +27,7 @@
 		F0D8627A1D45A27C00D6543D /* DistanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D862781D45A27C00D6543D /* DistanceCell.xib */; };
 		F0D862811D45E82D00D6543D /* DealsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D8627F1D45E82D00D6543D /* DealsCell.swift */; };
 		F0D862821D45E82D00D6543D /* DealsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D862801D45E82D00D6543D /* DealsCell.xib */; };
+		F0D862841D46DC4700D6543D /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D862831D46DC4700D6543D /* InfiniteScrollActivityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		F0D862781D45A27C00D6543D /* DistanceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DistanceCell.xib; sourceTree = "<group>"; };
 		F0D8627F1D45E82D00D6543D /* DealsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DealsCell.swift; sourceTree = "<group>"; };
 		F0D862801D45E82D00D6543D /* DealsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DealsCell.xib; sourceTree = "<group>"; };
+		F0D862831D46DC4700D6543D /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 				F0D862741D45A26900D6543D /* SortCell.xib */,
 				F0D8626F1D45A25400D6543D /* CategoriesCell.swift */,
 				F0D862701D45A25400D6543D /* CategoriesCell.xib */,
+				F0D862831D46DC4700D6543D /* InfiniteScrollActivityView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				F0D862711D45A25400D6543D /* CategoriesCell.swift in Sources */,
 				F0D862791D45A27C00D6543D /* DistanceCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
+				F0D862841D46DC4700D6543D /* InfiniteScrollActivityView.swift in Sources */,
 				F0D862811D45E82D00D6543D /* DealsCell.swift in Sources */,
 				F0D8626A1D4329E600D6543D /* FiltersViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,

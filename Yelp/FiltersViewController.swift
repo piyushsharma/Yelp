@@ -42,6 +42,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.filtersTableView.dataSource = self
         self.filtersTableView.delegate = self
+        
         isExpanded = [Bool](count: cellSections.count, repeatedValue: false)
         
         var cellNib = UINib(nibName: "DealsCell", bundle: NSBundle.mainBundle())
@@ -220,7 +221,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         let radiusFilter = [0, 483, 1609, 8047, 32187]
         filters["distance"] = radiusFilter[currentDistanceOptionIndex]
         
-        // since the search api input values are matched with the array created
+        // since the search api input values (YelpSortMode) are matched with the array created
         filters["sort"] = currentSortOptionIndex
         
         var selectedCategories = [String]()

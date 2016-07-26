@@ -9,7 +9,7 @@
 import UIKit
 
 
-class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate {
+class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var yelpTableView: UITableView!
 
@@ -17,9 +17,23 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
     var filteredBusinesses: [Business]!
     var searchBar = UISearchBar()
     var searchActive: Bool = false
+    var isMoreDataLoading = false
+    
+    var loadingMoreView:InfiniteScrollActivityView?
+    var filters = [String:AnyObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRectMake(0, self.yelpTableView.contentSize.height, self.yelpTableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.hidden = true
+        self.yelpTableView.addSubview(loadingMoreView!)
+        
+        var insets = self.yelpTableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        self.yelpTableView.contentInset = insets
         
         yelpTableView.delegate = self
         yelpTableView.dataSource = self
@@ -36,27 +50,66 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
         // you just need to set the titleView to be the search bar
         navigationItem.titleView = searchBar
         
-        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            self.filteredBusinesses = businesses
-            self.yelpTableView.reloadData()
-            for business in businesses {
-                print(business.name!)
-            }
-        })
-
-/* Example of Yelp search with more search options specified
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        }
-*/
+        self.filters["term"] = "Restaurants"
+        self.filters["sort"] = 0
+        self.loadBusinessData(false)
+        
     }
     
+    
+    func loadBusinessData(append: Bool) {
+        let term = self.filters["term"] as! String
+        let sortIndex = self.filters["sort"] as? Int
+        let sort = YelpSortMode(rawValue: sortIndex!)
+        
+        let categories = filters["categories"] as? [String]
+        let deals = filters["deals"] as? Bool
+        let radius = filters["radius"] as? NSNumber
+        var offset = 0
+        if (append) {
+            offset = self.businesses.count + 1
+        }
+        
+        Business.searchWithTerm(term, sort: sort, categories: categories, deals: deals, radius: radius, offset: offset, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+            
+            // Update flag
+            self.isMoreDataLoading = false
+            // Stop the loading indicator
+            self.loadingMoreView!.stopAnimating()
+            
+            if (append) {
+                self.businesses.appendContentsOf(businesses)
+            } else {
+                self.businesses = businesses
+            }
+            self.filteredBusinesses = self.businesses
+            
+            self.yelpTableView.reloadData()
+        })
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        // Handle scroll behavior here
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = self.yelpTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - self.yelpTableView.bounds.size.height
+        
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && self.yelpTableView.dragging) {
+                isMoreDataLoading = true
+            
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRectMake(0, self.yelpTableView.contentSize.height, self.yelpTableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+            
+                if(!searchActive) {
+                    self.loadBusinessData(true)
+                }
+            }
+        }
+    }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
@@ -129,19 +182,23 @@ class BusinessesViewController: UIViewController, UISearchBarDelegate, UITableVi
     }
     
     func filtersViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-        let dealSwitchState = filters["deals"] as? Bool
+        self.filters["deals"] = filters["deals"] as? Bool
         var radiusFilter = filters["distance"] as? NSNumber
         if (radiusFilter == 0) {
             radiusFilter = nil
         }
-        let sortBy = filters["sort"] as? YelpSortMode
+        self.filters["radius"] = radiusFilter
+        self.filters["sort"] = filters["sort"]
+    
+        self.filters["categories"] = filters["categories"] as? [String]
         
-        let categories = filters["categories"] as? [String]
         
-        Business.searchWithTerm("Restaurants", sort: sortBy, categories: categories, deals: dealSwitchState, radius: radiusFilter, completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            self.yelpTableView.reloadData()
-        })
+        self.loadBusinessData(false)
+        
+//        Business.searchWithTerm("Restaurants", sort: sortBy, categories: categories, deals: dealSwitchState, radius: radiusFilter, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+//            self.businesses = businesses
+//            self.yelpTableView.reloadData()
+//        })
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
